@@ -1,0 +1,25 @@
+{
+  "name": "customactions",
+  "version": "1.0.0",
+  "description": "For CustomActions",
+  "main": "vite.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitsvilas/customactions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitsvilas/customactions/issues"
+  },
+  "homepage": "https://github.com/bitsvilas/customactions#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^5.1.1"
+  }
+}

@@ -1,0 +1,18 @@
+name: 'Get & Cache Dependencies'
+#This description is important and appears in https://github.com/marketplace?type=actions
+description: 'Get the dependencies (via npm) and cache them.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: deps-node- modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      id: install
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
+      run: npm ci
+      shell: bash
+#shell is additional in github custom actions. You don't need to define this in action. 	  

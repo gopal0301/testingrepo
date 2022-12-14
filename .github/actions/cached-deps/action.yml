@@ -1,0 +1,39 @@
+name: 'Get & Cache Dependencies'
+#This description is important and appears in https://github.com/marketplace?type=actions
+description: 'Get the dependencies (via npm) and cache them.'
+
+#Step3 - You can define inputs and output for actions as below.
+#Step3: input.caching - do you want really use caching?
+
+inputs:
+  caching:
+    description: 'Whether to cache dependencies or not.'
+    required: false
+    default: 'true'
+#Step3: output.caching - did you really use caching
+outputs:
+  used-cache:
+    description: 'Whether the cache was used.'
+    value: ${{ steps.install.outputs.cache }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache dependencies
+#do caching only if it is true, otherwise it would re-execute    
+#GitHub Actions doesn't have else statement to run a different command/action/code. 
+#Added a negated condition check instead.
+      if: inputs.caching == 'true'
+      id: cache
+      uses: actions/cache@v3
+#With helps you to pass values to the action as input.      
+      with:
+        path: node_modules
+        key: deps-node- modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      id: install
+#or condition added to use caching only if it enabled.      
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
+      run: |
+        npm ci
+        echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
+      shell: bash
